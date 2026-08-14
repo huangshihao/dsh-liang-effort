@@ -7,10 +7,10 @@
 ## 安装
 
 ```bash
-dsh plugin --profile web add github:huangshihao/dsh-liang-effort
+npx --yes @deepseek-ai/dsh plugin --profile web add github:huangshihao/dsh-liang-effort
 ```
 
-安装完成后重启 `dsh web`。也可以把 [INSTALL_WITH_DSH.md](./INSTALL_WITH_DSH.md) 整份交给 DSH，让它通过 shell 工具安装并启用插件。
+安装完成后重新运行原来的 Web 启动命令，例如 `npx @deepseek-ai/dsh web`。如果已经全局安装了 DSH，可以把上述 `npx --yes @deepseek-ai/dsh` 简写为 `dsh`。也可以把 [INSTALL_WITH_DSH.md](./INSTALL_WITH_DSH.md) 整份交给 DSH，让它通过 shell 工具安装并启用插件。
 
 ## 交互
 
@@ -45,10 +45,10 @@ dsh web
 ## 卸载
 
 ```bash
-dsh plugin --profile web remove dsh-liang-effort
+npx --yes @deepseek-ai/dsh plugin --profile web remove dsh-liang-effort
 ```
 
-重启 `dsh web` 后，优先级为 `0` 的 DSH 内置模型选择界面会重新生效。
+重启原来的 DSH Web 进程后，优先级为 `0` 的 DSH 内置模型选择界面会重新生效。
 
 ## 素材与许可
 

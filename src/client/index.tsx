@@ -11,8 +11,7 @@ import {
 import { effortIndexOf, sliderEfforts } from './model.js'
 import { styles } from './styles.js'
 
-const TRANSPARENT_VIDEO_URL = '/plugins/dsh-liang-effort/liang-evolution.webm?v=1d4913f2f181'
-const FALLBACK_VIDEO_URL = '/plugins/dsh-liang-effort/liang-evolution.mp4?v=4b40259a3ff4'
+const VIDEO_URL = '/plugins/dsh-liang-effort/liang-evolution.mp4?v=4b40259a3ff4'
 const STYLE_ID = 'dsh-liang-effort-styles'
 
 interface Effort {
@@ -181,8 +180,7 @@ function EvolutionPortrait({ level, label, visualIndex }: { level: number; label
         onLoadedMetadata={() => setReady(true)}
         onError={() => setReady(false)}
       >
-        <source src={TRANSPARENT_VIDEO_URL} type="video/webm; codecs=vp9" />
-        <source src={FALLBACK_VIDEO_URL} type="video/mp4" />
+        <source src={VIDEO_URL} type="video/mp4" />
       </video>
       {!ready && <span className="dle-video-loading">LOADING</span>}
     </div>
@@ -290,13 +288,7 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
               <EvolutionPortrait level={activeEffort.level} label={activeEffort.label} visualIndex={preview} />
               <div className="dle-console">
                 <span className="dle-ghost" aria-hidden="true">{activeEffort.label}</span>
-                <div className="dle-readout">
-                  <div>
-                    <span className="dle-caption">Liang evolution · 梁阶状态</span>
-                    <p className={`dle-stage${busy ? ' is-seeking' : ''}`} aria-live="polite">{activeEffort.label}</p>
-                  </div>
-                  <span className="dle-index">{String(preview + 1).padStart(2, '0')} / {String(effortChoices.length).padStart(2, '0')}</span>
-                </div>
+                <span className="dle-visually-hidden" aria-live="polite">当前选择：{activeEffort.label}</span>
                 <div className="dle-rail" style={{ '--dle-progress': `${effortChoices.length <= 1 ? 100 : (preview / (effortChoices.length - 1)) * 100}%` } as React.CSSProperties}>
                   <span className="dle-track-fill" aria-hidden="true" />
                   <input
@@ -322,7 +314,6 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
                     {effortChoices.map((choice, index) => <span key={choice.id} className={index === preview ? 'is-active' : ''} title={choice.label}>{choice.label}</span>)}
                   </div>
                 </div>
-                <div className="dle-protocol">PROTOCOL VALUE · {activeEffort.id.toUpperCase()}</div>
               </div>
             </div>
           ) : (

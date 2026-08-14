@@ -98,17 +98,17 @@ export const styles = String.raw`
 
 .dle-instrument {
   position: relative;
-  min-height: 206px;
-  padding-left: 204px;
+  min-height: 132px;
+  padding-left: 184px;
 }
 
 .dle-portrait-shell {
   position: absolute;
   z-index: 4;
   left: 30px;
-  top: -104px;
-  width: 150px;
-  height: 246px;
+  top: -94px;
+  width: 138px;
+  height: 220px;
   overflow: visible;
   background: transparent;
   filter: drop-shadow(0 16px 18px rgba(14,18,24,.18));
@@ -119,15 +119,11 @@ export const styles = String.raw`
 .dle-portrait-shell[data-level="2"], .dle-portrait-shell[data-level="3"], .dle-portrait-shell[data-level="4"], .dle-portrait-shell[data-level="5"] { filter: drop-shadow(0 16px 18px rgba(14,18,24,.18)) drop-shadow(0 0 16px rgba(59,156,255,.16)); }
 .dle-video-loading { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.54); font: 600 9px/1 ui-monospace, monospace; letter-spacing: .12em; }
 
-.dle-console { position: relative; min-width: 0; padding: 27px 40px 18px 0; }
-.dle-ghost { position: absolute; top: 9px; right: 15px; color: rgba(20, 23, 28, .035); font-size: 64px; font-weight: 800; line-height: 1; pointer-events: none; transform: translateY(-8px); }
-.dle-readout { position: relative; display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
-.dle-caption { color: var(--dle-muted); font: 650 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .15em; text-transform: uppercase; }
-.dle-stage { margin: 8px 0 0; font-size: 28px; font-weight: 680; line-height: 1; letter-spacing: -.04em; transition: color 260ms ease, transform 260ms cubic-bezier(.2,.8,.2,1); }
-.dle-stage.is-seeking { color: var(--dle-accent); animation: dle-stage-breathe 760ms cubic-bezier(.2,.8,.2,1) both; }
-.dle-index { padding-top: 2px; color: var(--dle-muted); font: 650 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; white-space: nowrap; }
+.dle-console { position: relative; min-width: 0; padding: 49px 38px 12px 0; }
+.dle-ghost { position: absolute; top: 10px; right: 38px; color: rgba(20, 23, 28, .055); font-size: 42px; font-weight: 800; line-height: 1; pointer-events: none; }
+.dle-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
-.dle-rail { position: relative; margin-top: 28px; padding-top: 2px; }
+.dle-rail { position: relative; padding-top: 2px; }
 .dle-track-fill { position: absolute; left: 0; top: 9px; height: 4px; border-radius: 999px; width: var(--dle-progress); background: var(--dle-accent); box-shadow: 0 0 14px rgba(59,156,255,.22); transition: width 260ms cubic-bezier(.2,.8,.2,1); pointer-events: none; }
 .dle-range { position: relative; z-index: 2; width: 100%; height: 18px; margin: 0; appearance: none; -webkit-appearance: none; background: transparent; cursor: pointer; }
 .dle-range:disabled { cursor: wait; opacity: .6; }
@@ -144,22 +140,17 @@ export const styles = String.raw`
 .dle-labels span:first-child { text-align: left; }
 .dle-labels span:last-child { text-align: right; }
 .dle-labels span.is-active { color: var(--dle-ink); }
-.dle-protocol { margin-top: 12px; color: #a2a7ae; font: 500 8px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .07em; }
-
 .dle-message { position: relative; padding: 12px 16px; border-top: 1px solid rgba(20,23,28,.08); color: #747a82; font-size: 11px; }
 .dle-message.is-error { color: #b83d46; background: rgba(184,61,70,.05); }
 
 @keyframes dle-panel-in { from { opacity: 0; transform: translateY(6px) scale(.985); } to { opacity: 1; transform: none; } }
-@keyframes dle-stage-breathe { 0% { opacity: .55; transform: translateY(5px); } 45% { opacity: 1; transform: translateY(0); } 100% { opacity: 1; transform: translateY(0); } }
 
 @media (max-width: 520px) {
   .dle-panel { position: fixed; right: 12px; bottom: 72px; }
-  .dle-instrument { min-height: 172px; padding-left: 140px; }
-  .dle-portrait-shell { left: 19px; top: -82px; width: 104px; height: 190px; }
-  .dle-console { padding: 22px 38px 14px 0; }
-  .dle-stage { font-size: 24px; }
-  .dle-caption { font-size: 8px; letter-spacing: .09em; }
-  .dle-rail { margin-top: 24px; }
+  .dle-instrument { min-height: 118px; padding-left: 126px; }
+  .dle-portrait-shell { left: 19px; top: -68px; width: 96px; height: 170px; }
+  .dle-console { padding: 45px 38px 10px 0; }
+  .dle-ghost { top: 9px; right: 38px; font-size: 36px; }
   .dle-modelbar { gap: 9px; padding-inline: 13px; }
 }
 

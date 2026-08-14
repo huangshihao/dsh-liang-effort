@@ -12,7 +12,7 @@ describe('发布产物', () => {
     expect(bundle).toContain('requestAnimationFrame')
     expect(bundle).toContain('dle-modelbar')
     expect(bundle).toContain('liang-evolution.mp4')
-    expect(bundle).not.toContain('liang-evolution.webm')
+    expect(bundle).toContain('liang-evolution.webm')
   })
 
   it('Host 包提供视频路由', async () => {

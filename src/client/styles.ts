@@ -135,6 +135,7 @@ export const styles = String.raw`
 .dle-ticks { position: absolute; z-index: 3; top: 8px; left: 8px; right: 8px; display: flex; justify-content: space-between; pointer-events: none; }
 .dle-tick { width: 6px; height: 6px; border: 1px solid rgba(255,255,255,.85); border-radius: 50%; background: #bac0c7; transition: background-color 180ms ease, transform 180ms ease; }
 .dle-tick.is-active { background: var(--dle-accent); transform: scale(1.25); }
+.dle-tick.is-current { opacity: 0; }
 .dle-labels { display: grid; margin-top: 8px; color: var(--dle-muted); font-size: 9px; font-weight: 650; }
 .dle-labels span { min-width: 0; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
 .dle-labels span:first-child { text-align: left; }

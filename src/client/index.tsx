@@ -11,7 +11,8 @@ import {
 import { effortIndexOf, sliderEfforts } from './model.js'
 import { styles } from './styles.js'
 
-const VIDEO_URL = '/plugins/dsh-liang-effort/liang-evolution.mp4?v=4b40259a3ff4'
+const TRANSPARENT_VIDEO_URL = '/plugins/dsh-liang-effort/liang-evolution.webm?v=76e807d1cc64'
+const FALLBACK_VIDEO_URL = '/plugins/dsh-liang-effort/liang-evolution.mp4?v=4b40259a3ff4'
 const STYLE_ID = 'dsh-liang-effort-styles'
 
 interface Effort {
@@ -180,7 +181,8 @@ function EvolutionPortrait({ level, label, visualIndex }: { level: number; label
         onLoadedMetadata={() => setReady(true)}
         onError={() => setReady(false)}
       >
-        <source src={VIDEO_URL} type="video/mp4" />
+        <source src={TRANSPARENT_VIDEO_URL} type="video/webm; codecs=vp9" />
+        <source src={FALLBACK_VIDEO_URL} type="video/mp4" />
       </video>
       {!ready && <span className="dle-video-loading">LOADING</span>}
     </div>
@@ -308,7 +310,7 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
                     }}
                   />
                   <span className="dle-ticks" aria-hidden="true">
-                    {effortChoices.map((choice, index) => <i key={choice.id} className={`dle-tick${index <= preview ? ' is-active' : ''}`} />)}
+                    {effortChoices.map((choice, index) => <i key={choice.id} className={`dle-tick${index <= preview ? ' is-active' : ''}${index === preview ? ' is-current' : ''}`} />)}
                   </span>
                   <div className="dle-labels" style={{ gridTemplateColumns: `repeat(${effortChoices.length}, minmax(0, 1fr))` }} aria-hidden="true">
                     {effortChoices.map((choice, index) => <span key={choice.id} className={index === preview ? 'is-active' : ''} title={choice.label}>{choice.label}</span>)}
@@ -340,7 +342,6 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
                 </optgroup>
               ))}
             </select>
-            <Chevron />
           </footer>
         </section>
       )}

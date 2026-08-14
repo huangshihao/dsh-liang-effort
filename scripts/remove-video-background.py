@@ -56,6 +56,35 @@ def subject_envelope(frame_rgb: np.ndarray, session: object) -> np.ndarray:
     return cv2.GaussianBlur(expanded.astype(np.float32), (9, 9), 0)
 
 
+def repair_ears(mask: np.ndarray) -> np.ndarray:
+    """补回耳廓的窄边缘，并填充人物内部的误抠除区域。"""
+    height, width = mask.shape
+    ear_region = np.zeros(mask.shape, dtype=np.uint8)
+    for center_x in (0.25, 0.75):
+        cv2.ellipse(
+            ear_region,
+            (int(width * center_x), int(height * 0.44)),
+            (int(width * 0.075), int(height * 0.145)),
+            0,
+            0,
+            360,
+            255,
+            thickness=cv2.FILLED,
+        )
+    ear_weight = cv2.GaussianBlur(ear_region, (31, 31), 0).astype(np.float32) / 255
+    closed = cv2.morphologyEx(
+        mask,
+        cv2.MORPH_CLOSE,
+        cv2.getStructuringElement(cv2.MORPH_RECT, (3, 35)),
+    )
+    mask = np.maximum(mask, closed * ear_weight)
+    opaque = (mask > 96).astype(np.uint8) * 255
+    contours, _ = cv2.findContours(opaque, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    solid = np.zeros_like(opaque)
+    cv2.drawContours(solid, contours, -1, 255, thickness=cv2.FILLED)
+    return np.maximum(mask, solid.astype(np.float32) * ear_weight)
+
+
 def alpha_mask(
     frame_rgb: np.ndarray,
     session: object,
@@ -76,26 +105,21 @@ def alpha_mask(
         gray[:, -border:].ravel(),
     ))
     dark_background = np.median(border_pixels) < 110
-    left_ear_region = np.zeros(frame_rgb.shape[:2], dtype=np.uint8)
+    left_repair_region = np.zeros(frame_rgb.shape[:2], dtype=np.uint8)
     height, width = frame_rgb.shape[:2]
     cv2.ellipse(
-        left_ear_region,
+        left_repair_region,
         (int(width * 0.3), int(height * 0.43)),
-        (int(width * 0.09), int(height * 0.23)),
+        (int(width * 0.14), int(height * 0.3)),
         0,
         0,
         360,
         255,
         thickness=cv2.FILLED,
     )
-    if not dark_background:
-        repaired = np.fliplr(current).copy()
-        repaired[left_ear_region == 0] = 0
-        current = np.maximum(
-            current,
-            np.minimum(cv2.GaussianBlur(repaired, (3, 3), 0), envelope),
-        )
-    else:
+    repair_weight = cv2.GaussianBlur(left_repair_region, (61, 61), 0).astype(np.float32) / 255
+    current = current * (1 - repair_weight) + np.fliplr(current) * repair_weight
+    if dark_background:
         hsv = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2HSV)
         gold_details = (
             (hsv[:, :, 0] >= 5)
@@ -110,7 +134,8 @@ def alpha_mask(
             cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3)),
         )
         current = np.maximum(current, cv2.GaussianBlur(gold_alpha, (3, 3), 0))
-    return cv2.GaussianBlur(current, (3, 3), 0)
+    current = cv2.GaussianBlur(current, (3, 3), 0)
+    return cv2.GaussianBlur(repair_ears(current), (3, 3), 0)
 
 
 def encode_command(ffmpeg: Path, width: int, height: int, fps: float, output: Path) -> list[str]:
@@ -139,7 +164,7 @@ def encode_command(ffmpeg: Path, width: int, height: int, fps: float, output: Pa
         "-b:v",
         "0",
         "-crf",
-        "24",
+        "16",
         "-deadline",
         "good",
         "-cpu-used",

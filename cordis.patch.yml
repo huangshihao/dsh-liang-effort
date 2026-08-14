@@ -1,0 +1,5 @@
+# 把本包同时挂成 Host 插件和浏览器插件。Host 端提供 MP4 Range 路由，
+# 浏览器端通过 dsh.client 清单自动进入 Web 模块图。
+- insert:
+    - id: liang-effort
+      name: dsh-liang-effort

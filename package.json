@@ -1,0 +1,60 @@
+{
+  "name": "dsh-liang-effort",
+  "version": "0.1.0",
+  "description": "用牢梁、梁子、梁圣滑轨替换 DSH 的 DeepSeek 推理强度界面",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/",
+    "media/liang-evolution.mp4",
+    "cordis.patch.yml",
+    "README.md",
+    "INSTALL_WITH_DSH.md",
+    "MEDIA-NOTICE.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "pnpm run typecheck && pnpm run build && pnpm run test"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-model-selection"
+      ]
+    }
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "packageManager": "pnpm@10.15.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huangshihao/dsh-liang-effort.git"
+  },
+  "bugs": {
+    "url": "https://github.com/huangshihao/dsh-liang-effort/issues"
+  },
+  "homepage": "https://github.com/huangshihao/dsh-liang-effort#readme",
+  "devDependencies": {
+    "@types/node": "^24.2.1",
+    "@types/react": "^18.3.23",
+    "esbuild": "^0.25.9",
+    "react": "^18.3.1",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

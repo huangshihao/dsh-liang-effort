@@ -13,6 +13,7 @@
   "files": [
     "lib/",
     "media/liang-evolution.mp4",
+    "media/liang-evolution.webm",
     "cordis.patch.yml",
     "README.md",
     "INSTALL_WITH_DSH.md",

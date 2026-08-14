@@ -3,6 +3,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath } from 'node:url'
 
 export const VIDEO_PATH = '/plugins/dsh-liang-effort/liang-evolution.mp4'
+export const TRANSPARENT_VIDEO_PATH = '/plugins/dsh-liang-effort/liang-evolution.webm'
 
 interface ByteRange {
   end: number
@@ -48,46 +49,52 @@ export function parseByteRange(header: string | undefined, size: number): ByteRa
 export const inject = ['webServer']
 
 export function apply(ctx: PluginContext): void {
-  const videoFile = fileURLToPath(new URL('../media/liang-evolution.mp4', import.meta.url))
-  const size = statSync(videoFile).size
+  const videos = [
+    { contentType: 'video/webm', file: '../media/liang-evolution.webm', path: TRANSPARENT_VIDEO_PATH },
+    { contentType: 'video/mp4', file: '../media/liang-evolution.mp4', path: VIDEO_PATH },
+  ] as const
 
-  ctx.effect(() => ctx.webServer.register({
-    kind: 'exact',
-    path: VIDEO_PATH,
-    handler(request, response) {
-      if (request.method !== 'GET' && request.method !== 'HEAD') {
-        response.writeHead(405, { allow: 'GET, HEAD' })
-        response.end()
-        return
-      }
+  for (const video of videos) {
+    const videoFile = fileURLToPath(new URL(video.file, import.meta.url))
+    const size = statSync(videoFile).size
+    ctx.effect(() => ctx.webServer.register({
+      kind: 'exact',
+      path: video.path,
+      handler(request, response) {
+        if (request.method !== 'GET' && request.method !== 'HEAD') {
+          response.writeHead(405, { allow: 'GET, HEAD' })
+          response.end()
+          return
+        }
 
-      const range = parseByteRange(request.headers.range, size)
-      if (range === undefined) {
-        response.writeHead(416, { 'content-range': `bytes */${size}` })
-        response.end()
-        return
-      }
+        const range = parseByteRange(request.headers.range, size)
+        if (range === undefined) {
+          response.writeHead(416, { 'content-range': `bytes */${size}` })
+          response.end()
+          return
+        }
 
-      const commonHeaders = {
-        'accept-ranges': 'bytes',
-        'cache-control': 'public, max-age=31536000, immutable',
-        'content-type': 'video/mp4',
-      }
-      if (range === null) {
-        response.writeHead(200, { ...commonHeaders, 'content-length': size })
+        const commonHeaders = {
+          'accept-ranges': 'bytes',
+          'cache-control': 'public, max-age=31536000, immutable',
+          'content-type': video.contentType,
+        }
+        if (range === null) {
+          response.writeHead(200, { ...commonHeaders, 'content-length': size })
+          if (request.method === 'HEAD') response.end()
+          else createReadStream(videoFile).pipe(response)
+          return
+        }
+
+        const length = range.end - range.start + 1
+        response.writeHead(206, {
+          ...commonHeaders,
+          'content-length': length,
+          'content-range': `bytes ${range.start}-${range.end}/${size}`,
+        })
         if (request.method === 'HEAD') response.end()
-        else createReadStream(videoFile).pipe(response)
-        return
-      }
-
-      const length = range.end - range.start + 1
-      response.writeHead(206, {
-        ...commonHeaders,
-        'content-length': length,
-        'content-range': `bytes ${range.start}-${range.end}/${size}`,
-      })
-      if (request.method === 'HEAD') response.end()
-      else createReadStream(videoFile, range).pipe(response)
-    },
-  }), 'dsh-liang-effort: evolution video')
+        else createReadStream(videoFile, range).pipe(response)
+      },
+    }), `dsh-liang-effort: evolution video ${video.contentType}`)
+  }
 }

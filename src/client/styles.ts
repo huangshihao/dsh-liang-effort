@@ -105,23 +105,18 @@ export const styles = String.raw`
 .dle-portrait-shell {
   position: absolute;
   z-index: 4;
-  left: 22px;
-  top: -68px;
-  width: 164px;
-  height: 260px;
-  overflow: hidden;
-  border-radius: 48% 48% 18px 18px / 25% 25% 18px 18px;
-  background: #101316;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14), 0 18px 30px rgba(14,18,24,.16);
-  filter: drop-shadow(0 -3px 10px rgba(14,18,24,.08));
+  left: 30px;
+  top: -104px;
+  width: 150px;
+  height: 246px;
+  overflow: visible;
+  background: transparent;
+  filter: drop-shadow(0 16px 18px rgba(14,18,24,.18));
+  transition: filter 360ms ease;
 }
-.dle-portrait-shell::before, .dle-portrait-shell::after { content: ""; position: absolute; z-index: 2; pointer-events: none; }
-.dle-portrait-shell::before { inset: 8px; border: 1px solid rgba(255,255,255,.2); border-left-color: transparent; border-bottom-color: transparent; border-radius: inherit; }
-.dle-portrait-shell::after { inset: 0; opacity: .42; background: linear-gradient(110deg, transparent 28%, rgba(255,255,255,.12) 45%, transparent 58%); transform: translateX(-130%); }
-.dle-portrait-shell.is-seeking::after { animation: dle-scan 400ms ease-out; }
-.dle-video { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.76) contrast(1.06); transform: scale(1.025); transition: filter 320ms ease, transform 420ms cubic-bezier(.2,.8,.2,1), opacity 160ms ease; }
-.dle-portrait-shell.is-seeking .dle-video { filter: saturate(.92) contrast(1.1) brightness(1.05); transform: scale(1.065); }
-.dle-portrait-shell[data-level="2"] { box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), 0 0 28px rgba(59,156,255,.18); }
+.dle-video { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.82) contrast(1.04); transform: scale(1); transition: filter 320ms ease, transform 420ms cubic-bezier(.2,.8,.2,1), opacity 160ms ease; }
+.dle-portrait-shell.is-seeking .dle-video { filter: saturate(.96) contrast(1.08) brightness(1.04); transform: scale(1.045); }
+.dle-portrait-shell[data-level="2"], .dle-portrait-shell[data-level="3"], .dle-portrait-shell[data-level="4"], .dle-portrait-shell[data-level="5"] { filter: drop-shadow(0 16px 18px rgba(14,18,24,.18)) drop-shadow(0 0 16px rgba(59,156,255,.16)); }
 .dle-video-loading { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.54); font: 600 9px/1 ui-monospace, monospace; letter-spacing: .12em; }
 
 .dle-console { position: relative; min-width: 0; padding: 27px 40px 18px 0; }
@@ -155,13 +150,12 @@ export const styles = String.raw`
 .dle-message.is-error { color: #b83d46; background: rgba(184,61,70,.05); }
 
 @keyframes dle-panel-in { from { opacity: 0; transform: translateY(6px) scale(.985); } to { opacity: 1; transform: none; } }
-@keyframes dle-scan { from { transform: translateX(-130%); } to { transform: translateX(130%); } }
 @keyframes dle-stage-breathe { 0% { opacity: .55; transform: translateY(5px); } 45% { opacity: 1; transform: translateY(0); } 100% { opacity: 1; transform: translateY(0); } }
 
 @media (max-width: 520px) {
   .dle-panel { position: fixed; right: 12px; bottom: 72px; }
   .dle-instrument { min-height: 172px; padding-left: 140px; }
-  .dle-portrait-shell { left: 15px; top: -48px; width: 112px; height: 210px; }
+  .dle-portrait-shell { left: 19px; top: -82px; width: 104px; height: 190px; }
   .dle-console { padding: 22px 38px 14px 0; }
   .dle-stage { font-size: 24px; }
   .dle-caption { font-size: 8px; letter-spacing: .09em; }
@@ -181,7 +175,7 @@ export const styles = String.raw`
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dle-panel, .dle-portrait-shell.is-seeking::after { animation: none; }
+  .dle-panel { animation: none; }
   .dle-root * { transition-duration: .01ms !important; }
 }
 `

@@ -11,7 +11,8 @@ import {
 import { effortIndexOf, sliderEfforts } from './model.js'
 import { styles } from './styles.js'
 
-const VIDEO_URL = '/plugins/dsh-liang-effort/liang-evolution.mp4?v=4b40259a3ff4'
+const TRANSPARENT_VIDEO_URL = '/plugins/dsh-liang-effort/liang-evolution.webm?v=1d4913f2f181'
+const FALLBACK_VIDEO_URL = '/plugins/dsh-liang-effort/liang-evolution.mp4?v=4b40259a3ff4'
 const STYLE_ID = 'dsh-liang-effort-styles'
 
 interface Effort {
@@ -118,7 +119,13 @@ function EvolutionPortrait({ level, label, visualIndex }: { level: number; label
     if (delta > 0) {
       // 浏览器原生解码并播放连续帧，升档不再是一次 seek 换图。
       video.playbackRate = Math.min(4, Math.max(.5, delta / (motionDuration / 1_000)))
-      void video.play()
+      void video.play().catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        if (animationRef.current !== null) cancelAnimationFrame(animationRef.current)
+        animationRef.current = null
+        video.currentTime = target
+        setSeeking(false)
+      })
       const stopAtTarget = () => {
         if (video.currentTime + 1 / 60 < target) {
           animationRef.current = requestAnimationFrame(stopAtTarget)
@@ -167,14 +174,16 @@ function EvolutionPortrait({ level, label, visualIndex }: { level: number; label
       <video
         ref={videoRef}
         className="dle-video"
-        src={VIDEO_URL}
         preload="auto"
         muted
         playsInline
         aria-label={`当前形态：${label}`}
         onLoadedMetadata={() => setReady(true)}
         onError={() => setReady(false)}
-      />
+      >
+        <source src={TRANSPARENT_VIDEO_URL} type="video/webm; codecs=vp9" />
+        <source src={FALLBACK_VIDEO_URL} type="video/mp4" />
+      </video>
       {!ready && <span className="dle-video-loading">LOADING</span>}
     </div>
   )

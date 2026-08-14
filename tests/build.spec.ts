@@ -11,11 +11,14 @@ describe('发布产物', () => {
     expect(bundle).toContain('playbackRate')
     expect(bundle).toContain('requestAnimationFrame')
     expect(bundle).toContain('dle-modelbar')
+    expect(bundle).toContain('liang-evolution.webm')
   })
 
   it('Host 包提供视频路由', async () => {
     const bundle = await readFile(new URL('../lib/index.js', import.meta.url), 'utf8')
     expect(bundle).toContain('/plugins/dsh-liang-effort/liang-evolution.mp4')
+    expect(bundle).toContain('/plugins/dsh-liang-effort/liang-evolution.webm')
+    expect(bundle).toContain('video/webm')
     expect(bundle).toContain('content-range')
   })
 })

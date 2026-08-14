@@ -35,6 +35,7 @@ export const styles = String.raw`
 .dle-trigger:disabled { opacity: .45; cursor: default; }
 .dle-trigger-model { max-width: 126px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dle-trigger-effort { color: #2f8de8; font-weight: 650; white-space: nowrap; }
+.dle-trigger-effort small { margin-left: 2px; font: 600 9px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: .72; }
 .dle-chevron { width: 12px; height: 12px; flex: none; transition: transform 180ms ease; }
 .dle-trigger[aria-expanded="true"] .dle-chevron { transform: rotate(180deg); }
 
@@ -137,10 +138,13 @@ export const styles = String.raw`
 .dle-tick.is-active { background: var(--dle-accent); transform: scale(1.25); }
 .dle-tick.is-current { opacity: 0; }
 .dle-labels { display: grid; margin-top: 8px; color: var(--dle-muted); font-size: 9px; font-weight: 650; }
-.dle-labels span { min-width: 0; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
-.dle-labels span:first-child { text-align: left; }
-.dle-labels span:last-child { text-align: right; }
+.dle-labels span { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 2px; text-align: center; white-space: nowrap; }
+.dle-labels span:first-child { align-items: flex-start; text-align: left; }
+.dle-labels span:last-child { align-items: flex-end; text-align: right; }
+.dle-labels b { font: inherit; }
+.dle-labels small { max-width: 100%; overflow: hidden; color: color-mix(in srgb, var(--dle-muted) 86%, transparent); font: 600 8px/1.05 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: -.035em; text-overflow: ellipsis; }
 .dle-labels span.is-active { color: var(--dle-ink); }
+.dle-labels span.is-active small { color: color-mix(in srgb, var(--dle-ink) 82%, transparent); }
 .dle-message { position: relative; padding: 12px 16px; border-top: 1px solid rgba(20,23,28,.08); color: #747a82; font-size: 11px; }
 .dle-message.is-error { color: #b83d46; background: rgba(184,61,70,.05); }
 

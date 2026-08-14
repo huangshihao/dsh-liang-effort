@@ -17,4 +17,13 @@ describe('梁阶面板控件装饰', () => {
     expect(modelbar).toBeDefined()
     expect(modelbar).not.toContain('<Chevron />')
   })
+
+  it('梁阶标签同时显示 provider 的真实 effort 值', async () => {
+    const source = await readFile(new URL('../src/client/index.tsx', import.meta.url), 'utf8')
+
+    expect(source).toContain('<b>{choice.label}</b>')
+    expect(source).toContain('<small>({choice.id})</small>')
+    expect(source).toContain('{committedEffort.label}<small>({committedEffort.id})</small>')
+    expect(source).toContain('协议值 ${activeEffort.id}')
+  })
 })

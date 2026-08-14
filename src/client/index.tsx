@@ -218,7 +218,8 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
   const activeEffort = effortChoices[preview] ?? effortChoices[0]
   const busy = state.status === 'selecting'
   const modelLabel = currentChoice?.model.name ?? '选择模型'
-  const effortLabel = effortChoices[committedIndex]?.label
+  const committedEffort = effortChoices[committedIndex]
+  const effortLabel = committedEffort?.label
 
   useEffect(() => setPreview(committedIndex), [committedIndex])
   useEffect(() => {
@@ -274,14 +275,18 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
         aria-controls={open ? panelId : undefined}
         aria-haspopup="dialog"
         disabled={locked}
-        title={`${modelLabel}${effortLabel === undefined ? '' : ` · ${effortLabel}`}`}
+        title={`${modelLabel}${committedEffort === undefined ? '' : ` · ${committedEffort.label}(${committedEffort.id})`}`}
         onClick={() => {
           setOpen(value => !value)
           if (!open) load()
         }}
       >
         <span className="dle-trigger-model">{modelLabel}</span>
-        {effortLabel !== undefined && <span className="dle-trigger-effort">{effortLabel}</span>}
+        {committedEffort !== undefined && (
+          <span className="dle-trigger-effort">
+            {committedEffort.label}<small>({committedEffort.id})</small>
+          </span>
+        )}
         <Chevron />
       </button>
 
@@ -306,7 +311,7 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
                     value={preview}
                     disabled={busy}
                     aria-label="DeepSeek 推理强度"
-                    aria-valuetext={`${activeEffort.label}，第 ${preview + 1} 档，共 ${effortChoices.length} 档`}
+                    aria-valuetext={`${activeEffort.label}，协议值 ${activeEffort.id}，第 ${preview + 1} 档，共 ${effortChoices.length} 档`}
                     onChange={event => {
                       const next = Number(event.target.value)
                       const choice = effortChoices[next]
@@ -317,7 +322,12 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
                     {effortChoices.map((choice, index) => <i key={choice.id} className={`dle-tick${index <= preview ? ' is-active' : ''}${index === preview ? ' is-current' : ''}`} />)}
                   </span>
                   <div className="dle-labels" style={{ gridTemplateColumns: `repeat(${effortChoices.length}, minmax(0, 1fr))` }} aria-hidden="true">
-                    {effortChoices.map((choice, index) => <span key={choice.id} className={index === preview ? 'is-active' : ''} title={choice.label}>{choice.label}</span>)}
+                    {effortChoices.map((choice, index) => (
+                      <span key={choice.id} className={index === preview ? 'is-active' : ''} title={`${choice.label}(${choice.id})`}>
+                        <b>{choice.label}</b>
+                        <small>({choice.id})</small>
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>

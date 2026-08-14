@@ -9,6 +9,7 @@ import {
   type KeyboardEvent,
 } from 'react'
 import { effortIndexOf, sliderEfforts } from './model.js'
+import { reverseSampleAt } from './reverse-video.js'
 import { styles } from './styles.js'
 
 const TRANSPARENT_VIDEO_URL = '/plugins/dsh-liang-effort/liang-evolution.webm?v=76e807d1cc64'
@@ -143,15 +144,18 @@ function EvolutionPortrait({ level, label, visualIndex }: { level: number; label
       const startedAt = performance.now()
       let lastSampleAt = 0
       const reverseSample = (now: number) => {
-        const progress = Math.min(1, (now - startedAt) / motionDuration)
-        const eased = progress < .5
-          ? 4 * progress * progress * progress
-          : 1 - Math.pow(-2 * progress + 2, 3) / 2
-        if (now - lastSampleAt >= 1_000 / 30 || progress === 1) {
-          video.currentTime = start + delta * eased
-          lastSampleAt = now
-        }
-        if (progress < 1) {
+        const sample = reverseSampleAt({
+          duration: motionDuration,
+          lastSampleAt,
+          now,
+          seeking: video.seeking,
+          start,
+          startedAt,
+          target,
+        })
+        lastSampleAt = sample.lastSampleAt
+        if (sample.time !== undefined) video.currentTime = sample.time
+        if (!sample.complete) {
           animationRef.current = requestAnimationFrame(reverseSample)
           return
         }

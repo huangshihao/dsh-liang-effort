@@ -139,8 +139,8 @@ export const styles = String.raw`
 .dle-tick.is-current { opacity: 0; }
 .dle-labels { display: grid; margin-top: 8px; color: var(--dle-muted); font-size: 9px; font-weight: 650; }
 .dle-labels span { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 2px; text-align: center; white-space: nowrap; }
-.dle-labels span:first-child { align-items: flex-start; text-align: left; }
-.dle-labels span:last-child { align-items: flex-end; text-align: right; }
+.dle-labels span:first-child { justify-self: start; transform: translateX(calc(-50% + 8px)); }
+.dle-labels span:last-child { justify-self: end; transform: translateX(calc(50% - 8px)); }
 .dle-labels b { font: inherit; }
 .dle-labels small { max-width: 100%; overflow: hidden; color: color-mix(in srgb, var(--dle-muted) 86%, transparent); font: 600 8px/1.05 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: -.035em; text-overflow: ellipsis; }
 .dle-labels span.is-active { color: var(--dle-ink); }

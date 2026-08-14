@@ -26,4 +26,11 @@ describe('梁阶面板控件装饰', () => {
     expect(source).toContain('{committedEffort.label}<small>({committedEffort.id})</small>')
     expect(source).toContain('协议值 ${activeEffort.id}')
   })
+
+  it('端点梁名和协议值围绕对应刻度居中', async () => {
+    const styles = await readFile(new URL('../src/client/styles.ts', import.meta.url), 'utf8')
+
+    expect(styles).toContain('span:first-child { justify-self: start; transform: translateX(calc(-50% + 8px)); }')
+    expect(styles).toContain('span:last-child { justify-self: end; transform: translateX(calc(50% - 8px)); }')
+  })
 })

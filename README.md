@@ -15,6 +15,7 @@ dsh plugin --profile web add github:huangshihao/dsh-liang-effort
 ## 交互
 
 - 输入框右侧仍显示当前模型，点击后可以继续切换模型。
+- 弹层中的人物从卡片上沿探出，梁阶读数与滑轨位于人物右侧；模型选择收在最底部的独立通栏中。
 - 当所选模型恰好公布三个 effort 时，插件按原顺序显示 `牢梁 / 梁子 / 梁圣` 三档滑轨。
 - 当 effort 多于三个时，插件按 `off / minimal / low / medium / high / max` 语义映射为 `小难梁 / 牢梁 / 梁子 / 梁圣 / 梁神 / 梁祖`；未知名称按顺序自动匹配梁阶。
 - provider 没有声明默认 effort 时，切换到该模型会明确选择其公布的第一档，避免 UI 显示档位而 Host 仍处于未指定状态。

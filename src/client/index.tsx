@@ -274,24 +274,7 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
 
       {open && (
         <section id={panelId} className="dle-panel" role="dialog" aria-label="模型与梁氏推理强度">
-          <header className="dle-toolbar">
-            <span className="dle-kicker">MODEL</span>
-            <select
-              className="dle-model-select"
-              aria-label="选择模型"
-              value={state.current === null ? '' : `${state.current.provider}\u0000${state.current.model}`}
-              disabled={busy || choices.length === 0}
-              onChange={chooseModel}
-            >
-              {state.current === null && <option value="">正在读取模型…</option>}
-              {state.groups.map(group => (
-                <optgroup key={group.id} label={group.name}>
-                  {group.models.map(model => <option key={model.id} value={`${group.id}\u0000${model.id}`}>{model.name}</option>)}
-                </optgroup>
-              ))}
-            </select>
-            <button type="button" className="dle-close" aria-label="关闭" onClick={() => setOpen(false)}>×</button>
-          </header>
+          <button type="button" className="dle-close" aria-label="关闭" onClick={() => setOpen(false)}>×</button>
 
           {activeEffort !== undefined ? (
             <div className="dle-instrument">
@@ -300,7 +283,7 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
                 <span className="dle-ghost" aria-hidden="true">{activeEffort.label}</span>
                 <div className="dle-readout">
                   <div>
-                    <span className="dle-caption">Reasoning intensity</span>
+                    <span className="dle-caption">Liang evolution · 梁阶状态</span>
                     <p className={`dle-stage${busy ? ' is-seeking' : ''}`} aria-live="polite">{activeEffort.label}</p>
                   </div>
                   <span className="dle-index">{String(preview + 1).padStart(2, '0')} / {String(effortChoices.length).padStart(2, '0')}</span>
@@ -340,6 +323,25 @@ function LiangSelect({ available, directory, load, locked, select }: LiangSelect
           {(selectionError ?? (state.status === 'error' ? state.error : null)) !== null && (
             <div className="dle-message is-error" role="alert">{selectionError ?? state.error}</div>
           )}
+
+          <footer className="dle-modelbar">
+            <span className="dle-kicker">MODEL</span>
+            <select
+              className="dle-model-select"
+              aria-label="选择模型"
+              value={state.current === null ? '' : `${state.current.provider}\u0000${state.current.model}`}
+              disabled={busy || choices.length === 0}
+              onChange={chooseModel}
+            >
+              {state.current === null && <option value="">正在读取模型…</option>}
+              {state.groups.map(group => (
+                <optgroup key={group.id} label={group.name}>
+                  {group.models.map(model => <option key={model.id} value={`${group.id}\u0000${model.id}`}>{model.name}</option>)}
+                </optgroup>
+              ))}
+            </select>
+            <Chevron />
+          </footer>
         </section>
       )}
     </div>

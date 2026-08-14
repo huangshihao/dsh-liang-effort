@@ -10,6 +10,7 @@ describe('发布产物', () => {
     expect(bundle).toContain('priority: -100')
     expect(bundle).toContain('playbackRate')
     expect(bundle).toContain('requestAnimationFrame')
+    expect(bundle).toContain('dle-modelbar')
   })
 
   it('Host 包提供视频路由', async () => {

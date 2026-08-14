@@ -10,7 +10,7 @@
 dsh plugin --profile web add github:huangshihao/dsh-liang-effort
 ```
 
-安装完成后重启 `dsh web`。也可以把 [INSTALL_WITH_DSH.md](./INSTALL_WITH_DSH.md) 整份交给 DSH，让它通过 shell 工具执行安装和验收。
+安装完成后重启 `dsh web`。也可以把 [INSTALL_WITH_DSH.md](./INSTALL_WITH_DSH.md) 整份交给 DSH，让它通过 shell 工具安装并启用插件。
 
 ## 交互
 
